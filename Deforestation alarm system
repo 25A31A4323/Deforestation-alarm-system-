@@ -1,0 +1,153 @@
+#include <iostream>
+#include <vector>
+#include <iomanip>
+
+using namespace std;
+
+class ForestArea
+{
+private:
+    vector<vector<int>> oldMap;
+    vector<vector<int>> newMap;
+    int rows, cols;
+
+public:
+    ForestArea(int r, int c)
+    {
+        rows = r;
+        cols = c;
+
+        oldMap.resize(rows, vector<int>(cols));
+        newMap.resize(rows, vector<int>(cols));
+    }
+
+    void inputOldMap()
+    {
+        cout << "\nEnter OLD Forest Map Data\n";
+        cout << "(1 = Forest, 0 = Empty Area)\n";
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                cin >> oldMap[i][j];
+            }
+        }
+    }
+
+    void inputNewMap()
+    {
+        cout << "\nEnter NEW Forest Map Data\n";
+        cout << "(1 = Forest, 0 = Empty Area)\n";
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                cin >> newMap[i][j];
+            }
+        }
+    }
+
+    int countForest(vector<vector<int>> mapData)
+    {
+        int count = 0;
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (mapData[i][j] == 1)
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    void displayMap(vector<vector<int>> mapData)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (mapData[i][j] == 1)
+                    cout << "🌳 ";
+                else
+                    cout << "⬜ ";
+            }
+
+            cout << endl;
+        }
+    }
+
+    void analyzeDeforestation()
+    {
+        int oldForest = countForest(oldMap);
+        int newForest = countForest(newMap);
+
+        int lostTrees = oldForest - newForest;
+
+        double lossPercent =
+            ((double)lostTrees / oldForest) * 100;
+
+        cout << "\n====================================";
+        cout << "\n      DEFORESTATION ANALYSIS";
+        cout << "\n====================================\n";
+
+        cout << "\nOLD FOREST MAP\n";
+        displayMap(oldMap);
+
+        cout << "\nNEW FOREST MAP\n";
+        displayMap(newMap);
+
+        cout << "\nPrevious Forest Area : "
+             << oldForest;
+
+        cout << "\nCurrent Forest Area  : "
+             << newForest;
+
+        cout << "\nForest Lost          : "
+             << lostTrees;
+
+        cout << "\nForest Loss %        : "
+             << fixed << setprecision(2)
+             << lossPercent << "%\n";
+
+        if (lossPercent >= 20)
+        {
+            cout << "\n🚨 HIGH DEFORESTATION ALERT 🚨\n";
+            cout << "Environmental protection needed!\n";
+        }
+        else
+        {
+            cout << "\n✅ Forest area is stable.\n";
+        }
+    }
+};
+
+int main()
+{
+    int rows, cols;
+
+    cout << "====================================\n";
+    cout << " SMART DEFORESTATION DETECTION\n";
+    cout << "====================================\n";
+
+    cout << "\nEnter number of rows : ";
+    cin >> rows;
+
+    cout << "Enter number of columns : ";
+    cin >> cols;
+
+    ForestArea forest(rows, cols);
+
+    forest.inputOldMap();
+    forest.inputNewMap();
+
+    forest.analyzeDeforestation();
+
+    return 0;
+}
